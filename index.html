@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AbeehaTracking helps Shopify brands, lead-generation businesses, and performance marketing agencies improve conversion measurement with GTM, GA4, Meta Pixel, CAPI, server-side tracking, Google Ads tracking, and Consent Mode V2.">
+  <meta name="theme-color" content="#101a2d">
+  <title>AbeehaTracking | Web Analytics & Conversion Tracking</title>
+  <style>
+    :root {
+      --navy: #101a2d;
+      --navy-2: #172640;
+      --gold: #c5a572;
+      --ivory: #f8f5f0;
+      --white: #ffffff;
+      --ink: #1b2432;
+      --muted: #687386;
+      --line: #e8e4dd;
+      --soft: #f0ece5;
+      --shadow: 0 18px 50px rgba(16,26,45,.10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--ivory); line-height: 1.65; }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1140px, calc(100% - 40px)); margin-inline: auto; }
+    .topbar { position: sticky; top: 0; z-index: 50; background: rgba(16,26,45,.96); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.08); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--white); font-weight: 800; letter-spacing: -.03em; font-size: 1.16rem; }
+    .brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(197,165,114,.55); border-radius: 12px; color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+    .brand small { display: block; color: #c4ccda; font-size: .63rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; margin-top: -3px; }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: #e1e6ef; font-size: .9rem; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta, .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 18px; border-radius: 999px; font-weight: 750; font-size: .91rem; transition: transform .2s, background .2s, border-color .2s; }
+    .nav-cta, .btn-gold { background: var(--gold); color: var(--navy); }
+    .nav-cta:hover, .btn:hover { transform: translateY(-2px); }
+    .menu-toggle { display: none; background: transparent; color: white; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 9px 12px; font-size: 1.2rem; }
+    .hero { position: relative; overflow: hidden; background: radial-gradient(circle at 82% 18%, rgba(197,165,114,.19), transparent 27%), linear-gradient(135deg, var(--navy) 0%, #172740 100%); color: white; padding: 94px 0 86px; }
+    .hero:after { content: ""; position: absolute; width: 470px; height: 470px; border: 1px solid rgba(197,165,114,.18); border-radius: 50%; right: -160px; bottom: -260px; box-shadow: 0 0 0 38px rgba(197,165,114,.035), 0 0 0 78px rgba(197,165,114,.025); }
+    .hero-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 56px; align-items: center; position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: .16em; font-size: .75rem; font-weight: 800; }
+    .eyebrow:before { content: ""; width: 26px; height: 1px; background: currentColor; }
+    h1 { font-size: clamp(2.55rem, 5.4vw, 4.6rem); line-height: 1.06; letter-spacing: -.055em; margin: 20px 0 22px; max-width: 760px; }
+    h1 span { color: var(--gold); }
+    .hero-copy { color: #d3dbe7; font-size: 1.08rem; max-width: 640px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .btn-outline { border: 1px solid rgba(255,255,255,.28); color: white; background: rgba(255,255,255,.03); }
+    .btn-outline:hover { border-color: var(--gold); }
+    .hero-note { color: #aeb9c9; font-size: .83rem; margin-top: 22px; }
+    .dashboard { padding: 22px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.13); border-radius: 25px; box-shadow: 0 28px 80px rgba(0,0,0,.2); transform: rotate(1deg); }
+    .dash-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 17px; border-bottom: 1px solid rgba(255,255,255,.12); color: #dfe5ee; font-size: .82rem; }
+    .dots { display: flex; gap: 5px; } .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); opacity: .8; }
+    .dash-label { color: #aeb9c9; text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; margin-top: 22px; }
+    .dash-title { font-size: 1.35rem; font-weight: 750; margin: 4px 0 16px; }
+    .signal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .signal { padding: 15px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); border-radius: 15px; }
+    .signal strong { display: block; color: var(--gold); font-size: 1.3rem; letter-spacing: -.03em; }
+    .signal span { color: #c3ccda; font-size: .76rem; }
+    .chart { height: 105px; margin-top: 18px; display: flex; align-items: end; gap: 8px; padding: 10px 4px 0; border-bottom: 1px solid rgba(255,255,255,.15); }
+    .chart i { flex: 1; background: linear-gradient(180deg, var(--gold), rgba(197,165,114,.2)); border-radius: 6px 6px 0 0; min-height: 12px; }
+    .dash-foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; color: #c3ccda; font-size: .74rem; }
+    .trust-strip { background: #fff; border-bottom: 1px solid var(--line); }
+    .trust-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; flex-wrap: wrap; }
+    .trust-inner p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .tool-list { display: flex; flex-wrap: wrap; gap: 9px; }
+    .tool-pill { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 7px 12px; color: #3c4656; font-weight: 750; font-size: .76rem; }
+    section { padding: 86px 0; }
+    .section-head { max-width: 720px; margin-bottom: 36px; }
+    .section-kicker { color: #947343; text-transform: uppercase; letter-spacing: .16em; font-size: .73rem; font-weight: 850; }
+    h2 { font-size: clamp(2rem, 3.6vw, 3.15rem); line-height: 1.13; letter-spacing: -.045em; color: var(--navy); margin: 12px 0 15px; }
+    .section-head p { color: var(--muted); font-size: 1.02rem; margin: 0; }
+    .problem-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; align-items: start; }
+    .problem-card { background: var(--navy); color: white; border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+    .problem-card h3 { font-size: 1.55rem; line-height: 1.2; margin: 0 0 14px; letter-spacing: -.03em; }
+    .problem-card p { color: #cbd4e1; margin: 0 0 22px; }
+    .gold-line { height: 3px; width: 54px; background: var(--gold); border-radius: 10px; margin-bottom: 20px; }
+    .benefit-list { display: grid; gap: 20px; }
+    .benefit { display: grid; grid-template-columns: 46px 1fr; gap: 15px; }
+    .icon-box { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: #eee6d8; color: #70552d; font-size: 1.15rem; font-weight: 900; }
+    .benefit h3 { margin: 0 0 4px; font-size: 1.04rem; color: var(--navy); }
+    .benefit p { margin: 0; color: var(--muted); font-size: .93rem; }
+    .services { background: #fff; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .service-card { border: 1px solid var(--line); background: #fff; border-radius: 19px; padding: 25px; transition: transform .22s, box-shadow .22s, border-color .22s; }
+    .service-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: #d6c4a5; }
+    .service-number { color: #a98a58; font-weight: 850; font-size: .75rem; letter-spacing: .12em; }
+    .service-card h3 { font-size: 1.1rem; line-height: 1.25; margin: 13px 0 10px; color: var(--navy); }
+    .service-card p { font-size: .9rem; color: var(--muted); margin: 0 0 16px; }
+    .service-card ul { padding-left: 18px; margin: 0; color: #465164; font-size: .84rem; }
+    .service-card li { margin: 6px 0; }
+    .platforms { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .platform-box { background: var(--soft); padding: 28px; border-radius: var(--radius); }
+    .platform-item { display: flex; gap: 13px; padding: 14px 0; border-bottom: 1px solid #ddd5c9; }
+    .platform-item:last-child { border-bottom: 0; }
+    .check { flex: 0 0 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; background: var(--navy); color: var(--gold); font-size: .8rem; font-weight: 900; }
+    .platform-item strong { display: block; color: var(--navy); }
+    .platform-item span { color: var(--muted); font-size: .87rem; }
+    .about { background: var(--navy); color: white; }
+    .about .section-kicker { color: var(--gold); }
+    .about h2 { color: white; }
+    .about .section-head p { color: #cbd4e1; }
+    .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 54px; align-items: start; }
+    .about-intro { padding: 28px; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); background: rgba(255,255,255,.045); }
+    .initials { width: 68px; height: 68px; display: grid; place-items: center; border-radius: 20px; color: var(--navy); background: var(--gold); font-size: 1.4rem; font-weight: 900; margin-bottom: 20px; }
+    .about-intro h3 { margin: 0 0 6px; font-size: 1.35rem; }
+    .about-intro .role { color: var(--gold); font-size: .88rem; margin-bottom: 17px; }
+    .about-intro p { color: #cbd4e1; font-size: .92rem; }
+    .about-copy p { color: #d0d8e4; margin-top: 0; }
+    .about-copy h3 { color: white; margin: 24px 0 10px; }
+    .about-copy ul { color: #d0d8e4; padding-left: 20px; }
+    .about-copy li { margin: 8px 0; }
+    .callout { padding: 17px 19px; border-left: 3px solid var(--gold); background: rgba(255,255,255,.06); color: #e7ebf1; border-radius: 0 12px 12px 0; margin-top: 22px; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .project-card { border-radius: 20px; overflow: hidden; background: white; border: 1px solid var(--line); }
+    .project-visual { min-height: 155px; background: linear-gradient(135deg, #101a2d, #263a58); padding: 24px; color: white; display: flex; flex-direction: column; justify-content: space-between; }
+    .project-visual .mini-tag { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); }
+    .project-visual strong { font-size: 1.35rem; line-height: 1.2; max-width: 220px; }
+    .project-body { padding: 22px; }
+    .project-body h3 { margin: 0 0 8px; color: var(--navy); font-size: 1.05rem; }
+    .project-body p { color: var(--muted); font-size: .89rem; margin: 0 0 14px; }
+    .status { display: inline-block; border-radius: 999px; background: #f0ece5; color: #755b34; padding: 5px 9px; font-size: .72rem; font-weight: 800; }
+    .audience { background: #fff; }
+    .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .audience-card { padding: 25px; border-radius: 18px; background: var(--ivory); border: 1px solid var(--line); }
+    .audience-card h3 { margin: 0 0 9px; color: var(--navy); }
+    .audience-card p { color: var(--muted); font-size: .92rem; margin: 0; }
+    .workflow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .step { border-top: 2px solid var(--gold); padding: 18px 15px 0 0; }
+    .step .n { color: #a98a58; font-weight: 900; font-size: .75rem; letter-spacing: .12em; }
+    .step h3 { font-size: 1rem; color: var(--navy); margin: 7px 0; }
+    .step p { color: var(--muted); font-size: .85rem; margin: 0; }
+    .contact { background: var(--soft); }
+    .contact-panel { background: var(--navy); border-radius: 28px; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; color: white; }
+    .contact-panel h2 { color: white; margin-top: 12px; }
+    .contact-panel p { color: #cbd4e1; }
+    .contact-email { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 17px; padding: 22px; }
+    .contact-email small { color: var(--gold); text-transform: uppercase; letter-spacing: .12em; font-weight: 800; }
+    .contact-email a.email { display: block; color: white; font-weight: 750; overflow-wrap: anywhere; margin: 8px 0 18px; }
+    .contact-email a.email:hover { color: var(--gold); }
+    .footer { background: #0b1220; color: #aeb9c9; padding: 28px 0; font-size: .82rem; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .footer strong { color: white; }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+    .footer a:hover { color: var(--gold); }
+    .disclaimer { color: #9ca8ba; font-size: .78rem; margin-top: 20px; max-width: 900px; }
+    @media (max-width: 900px) {
+      .hero-grid, .problem-grid, .platforms, .about-grid, .contact-panel { grid-template-columns: 1fr; }
+      .hero-grid { gap: 38px; }
+      .dashboard { max-width: 560px; transform: none; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .workflow { grid-template-columns: repeat(3, 1fr); }
+      .portfolio-grid, .audience-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-panel { gap: 20px; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(100% - 30px, 1140px); }
+      .nav { min-height: 68px; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links { display: none; position: absolute; top: 68px; left: 0; right: 0; padding: 16px 20px 20px; background: var(--navy); border-top: 1px solid rgba(255,255,255,.1); flex-direction: column; align-items: stretch; gap: 0; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 4px; }
+      .nav-cta { text-align: center; margin-top: 8px; }
+      .hero { padding: 64px 0 58px; }
+      h1 { font-size: clamp(2.45rem, 12vw, 3.5rem); }
+      .hero-copy { font-size: 1rem; }
+      section { padding: 64px 0; }
+      .services-grid, .portfolio-grid, .audience-grid { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: 1fr; gap: 22px; }
+      .step { padding-left: 15px; border-top: 0; border-left: 2px solid var(--gold); }
+      .trust-inner { align-items: flex-start; }
+      .dash-foot { flex-direction: column; }
+      .signal-row { grid-template-columns: 1fr 1fr; }
+      .service-card { padding: 22px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="AbeehaTracking home">
+        <span class="brand-mark">A</span>
+        <span>AbeehaTracking<small>Analytics & Conversion Tracking</small></span>
+      </a>
+      <button class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" id="menuToggle">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+        <a class="nav-cta" href="mailto:abeeharehan.08@gmail.com?subject=Tracking%20Project%20Inquiry">Let's Talk Tracking ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Web Analytics & Conversion Tracking</div>
+          <h1>Tracking Gaps Are <span>Wasting Your Ad Budget</span></h1>
+          <p class="hero-copy">Turn tracking data into better marketing decisions. I help businesses implement, test, and improve conversion tracking so they can measure important actions, understand campaign performance, and make more informed advertising decisions.</p>
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="mailto:abeeharehan.08@gmail.com?subject=Tracking%20Project%20Inquiry">Let's Talk Tracking <span>↗</span></a>
+            <a class="btn btn-outline" href="#services">Explore Services ↓</a>
+          </div>
+          <p class="hero-note">For Shopify brands, lead-generation businesses, and performance marketing agencies.</p>
+        </div>
+        <div class="dashboard" aria-label="Illustrative tracking dashboard">
+          <div class="dash-top"><span>CONVERSION MEASUREMENT</span><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="dash-label">Tracking health starts with</div>
+          <div class="dash-title">Clear, validated event data</div>
+          <div class="signal-row">
+            <div class="signal"><strong>01</strong><span>Measure key actions</span></div>
+            <div class="signal"><strong>02</strong><span>Validate event data</span></div>
+            <div class="signal"><strong>03</strong><span>Find tracking gaps</span></div>
+            <div class="signal"><strong>04</strong><span>Improve decisions</span></div>
+          </div>
+          <div class="chart" aria-hidden="true"><i style="height:32%"></i><i style="height:48%"></i><i style="height:40%"></i><i style="height:67%"></i><i style="height:56%"></i><i style="height:78%"></i><i style="height:69%"></i><i style="height:92%"></i><i style="height:81%"></i><i style="height:100%"></i></div>
+          <div class="dash-foot"><span>Illustrative visual, not client results</span><span>Measure · Test · Improve</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip">
+      <div class="container trust-inner">
+        <p>Tracking tools and platforms</p>
+        <div class="tool-list">
+          <span class="tool-pill">GTM</span><span class="tool-pill">GA4</span><span class="tool-pill">Meta Pixel</span><span class="tool-pill">Meta CAPI</span><span class="tool-pill">Google Ads</span><span class="tool-pill">Consent Mode V2</span>
+        </div>
+      </div>
+    </div>
+
+    <section id="why">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Why tracking matters</div>
+          <h2>Your ad reports are only as useful as the data behind them.</h2>
+          <p>Missing events, duplicate conversions, and incorrect configurations can make campaign performance difficult to understand. Better tracking gives you a stronger foundation for evaluating what is working.</p>
+        </div>
+        <div class="problem-grid">
+          <div class="problem-card">
+            <div class="gold-line"></div>
+            <h3>Stop guessing what happens after the click.</h3>
+            <p>Make important customer actions easier to measure, validate your conversion events, and use more reliable information when reviewing campaigns.</p>
+            <a class="btn btn-gold" href="mailto:abeeharehan.08@gmail.com?subject=Tracking%20Audit%20Inquiry">Discuss Your Tracking ↗</a>
+          </div>
+          <div class="benefit-list">
+            <div class="benefit"><div class="icon-box">⌕</div><div><h3>Find tracking gaps</h3><p>Identify missing, duplicated, or incorrectly configured events that may distort conversion reports.</p></div></div>
+            <div class="benefit"><div class="icon-box">◎</div><div><h3>Support campaign optimization</h3><p>Well-configured conversion signals can help advertising platforms optimize toward meaningful actions when data and campaign setup support it.</p></div></div>
+            <div class="benefit"><div class="icon-box">↘</div><div><h3>Make smarter budget decisions</h3><p>More dependable measurement helps marketers assess campaigns and investigate potential wasted spend.</p></div></div>
+            <div class="benefit"><div class="icon-box">↗</div><div><h3>Build toward more conversions</h3><p>Better data supports informed improvements. Actual sales and lead growth also depend on the offer, audience, website, and campaign execution.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Services</div>
+          <h2>Tracking solutions built around your business goals.</h2>
+          <p>From browser-side events to server-side event delivery, each implementation should be relevant to your platform, conversion goals, and measurement requirements.</p>
+        </div>
+        <div class="services-grid">
+          <article class="service-card"><div class="service-number">SERVICE 01</div><h3>Google Tag Manager (GTM)</h3><p>Organize and manage website tags to measure important user interactions.</p><ul><li>Tags, triggers, and variables</li><li>Data layer and event tracking</li><li>Click, form, and ecommerce events</li><li>Preview mode testing and debugging</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 02</div><h3>Google Analytics 4 (GA4)</h3><p>Measure website activity and meaningful conversions with a structured event setup.</p><ul><li>GA4 tag and event configuration</li><li>Key events and ecommerce tracking</li><li>Event parameter validation</li><li>DebugView and Realtime checks</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 03</div><h3>Meta Pixel Tracking</h3><p>Implement and test eligible browser-side events for Meta advertising measurement.</p><ul><li>Pixel setup and configuration</li><li>Lead and ecommerce events</li><li>Event parameter checks</li><li>Events Manager diagnostics</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 04</div><h3>Meta Conversions API (CAPI)</h3><p>Configure supported server-to-server event integrations and validate their behavior.</p><ul><li>CAPI integration checks</li><li>Browser and server event coordination</li><li>Event ID and deduplication checks</li><li>Event quality diagnostics</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 05</div><h3>Server-Side Tracking</h3><p>Build a more controlled tracking architecture for supported analytics and advertising events.</p><ul><li>Server-side GTM configuration</li><li>Browser-to-server event flow</li><li>Supported platform integrations</li><li>Data routing and validation</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 06</div><h3>Google Ads Conversion Tracking</h3><p>Measure purchase and lead actions so campaign performance can be evaluated more clearly.</p><ul><li>Conversion action configuration</li><li>Purchase and lead tracking</li><li>GTM conversion tags</li><li>Firing and diagnostics checks</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 07</div><h3>Google Consent Mode V2</h3><p>Configure relevant consent signals and tag behavior to support consent-aware measurement.</p><ul><li>Consent defaults and updates</li><li>GTM consent settings</li><li>Consent platform integration checks</li><li>Testing different consent states</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 08</div><h3>Shopify, WordPress & WooCommerce</h3><p>Set up relevant tracking for ecommerce stores and content or lead-generation websites.</p><ul><li>Product and add-to-cart events</li><li>Checkout and purchase tracking</li><li>Form and lead measurement</li><li>Supported integrations and testing</li></ul></article>
+          <article class="service-card"><div class="service-number">SERVICE 09</div><h3>Tracking Audit & Debugging</h3><p>Investigate common tracking problems and document practical next steps.</p><ul><li>Missing or duplicate events</li><li>Incorrect event names or parameters</li><li>Conversion tag firing issues</li><li>Browser/server consistency checks</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="server-side">
+      <div class="container platforms">
+        <div>
+          <div class="section-kicker">Modern measurement</div>
+          <h2>Is server-side tracking right for your business?</h2>
+          <p style="color:var(--muted)">Server-side tracking is increasingly valuable for businesses that rely on paid advertising and need more control over how supported event data is processed and routed. It can complement browser-side tracking and help address some browser-related measurement limitations.</p>
+          <p style="color:var(--muted)">It is not a universal requirement or a way to bypass privacy choices. Benefits depend on the setup, data quality, platform support, and consent requirements.</p>
+          <a class="btn btn-gold" href="mailto:abeeharehan.08@gmail.com?subject=Server-Side%20Tracking%20Inquiry">Discuss Server-Side Tracking ↗</a>
+        </div>
+        <div class="platform-box">
+          <div class="platform-item"><div class="check">✓</div><div><strong>More control over event routing</strong><span>Route supported event data through a server-side environment.</span></div></div>
+          <div class="platform-item"><div class="check">✓</div><div><strong>Browser and server event coordination</strong><span>Validate event delivery and duplication handling where applicable.</span></div></div>
+          <div class="platform-item"><div class="check">✓</div><div><strong>Better measurement diagnostics</strong><span>Investigate missing events and inconsistent conversion reporting.</span></div></div>
+          <div class="platform-item"><div class="check">✓</div><div><strong>Privacy-aware implementation</strong><span>Respect consent choices and apply appropriate data controls.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">About me</div>
+          <h2>Practical tracking. Clear communication. Better measurement.</h2>
+          <p>Helping businesses build a more dependable foundation for understanding digital marketing performance.</p>
+        </div>
+        <div class="about-grid">
+          <div class="about-intro">
+            <div class="initials">AR</div>
+            <h3>Abeeha Rehan</h3>
+            <div class="role">Web Analytics & Conversion Tracking Practitioner</div>
+            <p>I focus on practical implementation and testing of tracking tools, event configurations, and conversion measurement workflows.</p>
+            <a class="btn btn-gold" href="mailto:abeeharehan.08@gmail.com?subject=Hello%20Abeeha">Contact Me ↗</a>
+          </div>
+          <div class="about-copy">
+            <p>I help businesses build more reliable tracking systems so they can understand their marketing performance, measure meaningful conversions, and make smarter, data-informed decisions.</p>
+            <p>My focus is on implementing, testing, and improving conversion tracking across <strong>Shopify, WordPress, WooCommerce, and other supported website platforms.</strong></p>
+            <p>I work with Google Tag Manager (GTM), Google Analytics 4 (GA4), Meta Pixel, Meta Conversions API (CAPI), server-side tracking, Google Ads conversion tracking, and Google Consent Mode V2.</p>
+            <h3>Why server-side tracking matters</h3>
+            <p>Digital advertising measurement is becoming more challenging as privacy controls, browser restrictions, and changes in data collection affect how conversion events are measured. Server-side tracking is an increasingly valuable option for businesses that need more control over supported event data and measurement workflows.</p>
+            <p>When implemented appropriately, it can complement browser-side tracking, support event delivery, and help address certain browser-related measurement limitations. Its benefits depend on the technical setup, event quality, platform integrations, and applicable consent requirements.</p>
+            <h3>My approach</h3>
+            <ul>
+              <li><strong>Understand:</strong> Identify your website platform, channels, and conversion goals.</li>
+              <li><strong>Review:</strong> Check existing tags, events, integrations, and potential measurement gaps.</li>
+              <li><strong>Implement:</strong> Configure agreed tracking requirements using appropriate tools.</li>
+              <li><strong>Test:</strong> Validate event firing, parameters, duplication, and relevant consent behavior.</li>
+              <li><strong>Explain:</strong> Communicate what was configured, tested, and what needs further attention.</li>
+            </ul>
+            <div class="callout">I am developing my practical expertise through hands-on tracking projects and testing environments. I aim to be transparent about my experience, what has been implemented, and what has been verified.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Portfolio & projects</div>
+          <h2>Hands-on work, documented clearly.</h2>
+          <p>This section is designed to showcase real practical implementations. Add screenshots, setup details, and validation evidence as each project is completed.</p>
+        </div>
+        <div class="portfolio-grid">
+          <article class="project-card"><div class="project-visual"><span class="mini-tag">Project 01 · Browser-side</span><strong>Website Event Tracking</strong></div><div class="project-body"><h3>Browser-Side Tracking Practice</h3><p>Demonstrate GTM tag setup, event configuration, browser testing, and debugging on a demo website.</p><span class="status">Demo / practice project</span></div></article>
+          <article class="project-card"><div class="project-visual"><span class="mini-tag">Project 02 · Analytics</span><strong>Conversion Measurement</strong></div><div class="project-body"><h3>GA4 & Conversion Events</h3><p>Show how important actions are configured, how parameters are checked, and how events are validated.</p><span class="status">Add verified screenshots</span></div></article>
+          <article class="project-card"><div class="project-visual"><span class="mini-tag">Project 03 · Server-side</span><strong>Event Delivery & Validation</strong></div><div class="project-body"><h3>Server-Side Tracking Practice</h3><p>Document server-side configuration, supported event flow, testing, and deduplication checks when implemented.</p><span class="status">Add after implementation</span></div></article>
+        </div>
+        <p style="color:var(--muted);font-size:.84rem;margin-top:18px">Portfolio note: Only work actually implemented and tested should be described as completed. Demo work is clearly labelled and should not be presented as paid client results.</p>
+      </div>
+    </section>
+
+    <section class="audience" id="clients">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Who I help</div>
+          <h2>Tracking support for teams that depend on performance data.</h2>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card"><h3>Shopify Brands</h3><p>Measure relevant product, cart, checkout, and purchase events across supported analytics and advertising integrations.</p></article>
+          <article class="audience-card"><h3>Lead-Generation Businesses</h3><p>Track form submissions and meaningful lead actions to support clearer campaign measurement and evaluation.</p></article>
+          <article class="audience-card"><h3>Performance Marketing Agencies</h3><p>Get implementation and testing support for GTM, GA4, Meta, Google Ads, and server-side tracking tasks within an agreed scope.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">How I work</div>
+          <h2>A clear process from tracking review to validation.</h2>
+        </div>
+        <div class="workflow">
+          <div class="step"><div class="n">STEP 01</div><h3>Understand</h3><p>Identify your goals, platform, channels, and key conversions.</p></div>
+          <div class="step"><div class="n">STEP 02</div><h3>Review</h3><p>Inspect relevant configurations and identify potential gaps.</p></div>
+          <div class="step"><div class="n">STEP 03</div><h3>Implement</h3><p>Configure the agreed tags, events, and integrations.</p></div>
+          <div class="step"><div class="n">STEP 04</div><h3>Validate</h3><p>Test event behavior, parameters, and consent settings.</p></div>
+          <div class="step"><div class="n">STEP 05</div><h3>Report</h3><p>Share findings, limitations, and practical next steps.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact-panel">
+          <div>
+            <div class="section-kicker">Let's work together</div>
+            <h2>Let's fix your tracking gaps.</h2>
+            <p>Tell me about your website, the platforms you use, and the conversion events you need to measure. We can discuss your tracking requirements and identify practical next steps.</p>
+            <p>For Shopify stores, WordPress and WooCommerce websites, lead-generation businesses, and performance marketing agencies.</p>
+          </div>
+          <div class="contact-email">
+            <small>Get in touch by email</small>
+            <a class="email" href="mailto:abeeharehan.08@gmail.com?subject=Tracking%20Project%20Inquiry">abeeharehan.08@gmail.com</a>
+            <a class="btn btn-gold" href="mailto:abeeharehan.08@gmail.com?subject=Tracking%20Project%20Inquiry">Email About a Project ↗</a>
+            <p style="font-size:.78rem;margin-bottom:0">Clicking the button opens your email app. A separate contact form is not connected on this version.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div><strong>AbeehaTracking</strong><br>Web Analytics & Conversion Tracking</div>
+        <div class="footer-links"><a href="#about">About</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#contact">Contact</a><a href="mailto:abeeharehan.08@gmail.com">Email</a></div>
+        <div>© <span id="year">2026</span> AbeehaTracking</div>
+      </div>
+      <p class="disclaimer">Tracking implementations depend on the website platform, available integrations, technical access, event quality, and applicable consent requirements. Tracking can improve measurement but does not guarantee lower advertising costs or increased sales. Google, Meta, Shopify, WordPress, WooCommerce, and other product names are referenced descriptively; this website is an independent service portfolio and is not affiliated with those companies.</p>
+    </div>
+  </footer>
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.textContent = isOpen ? '✕' : '☰';
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = '☰';
+    }));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
